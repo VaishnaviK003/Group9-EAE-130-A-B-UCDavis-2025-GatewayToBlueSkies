@@ -5,14 +5,16 @@
 
 import math
 
+### PART C ###
+
 # Using the cost escalation factor (CEF) to convert the costs between different years
 
 base_year = 1989 # Roskam uses 1989 as the base year for calculations and we have chosen to stick with Roskam - using euqations cited in Metabook
 then_year = 2035 # Year representing the technology level of the aircraft 
 
-# For 2025 - equation from Metabook
-base_CEF = 5.17053 + 0.104981 * (base_year - 2025)
-then_CEF = 5.17053 + 0.104981 * (then_year - 2025)
+# For 2024 - equation from Metabook
+base_CEF = 5.17053 + 0.104981 * (base_year - 2024)
+then_CEF = 5.17053 + 0.104981 * (then_year - 2024)
 
 CEF = then_CEF / base_CEF
 
@@ -30,8 +32,11 @@ print("Total cost of airframe: $" + str(round(cost_airframe, 2)))
 
 # Cash Operating Cost (COC) - costs directly related to flights
 
-block_time = float(input("Enter the block time (hrs): "))
+block_time = float(input("Enter the block time (hrs): ")) # the overall time for which the aircraft is in use for a given mission, measured
+                                                          # from the time the wheel blocks are removed before departure, to the time they
+                                                          # are placed after arrival at the destination.
 cost_crew = 0.34 * (2.75 * (MTOW ** 0.40) * block_time) * CEF
+print("Cost of crew: $" + str(round(cost_crew, 2)))
 
 # Cost of fuel
 fuel_weight = float(input("Enter the weight of the fuel (lbs): "))
@@ -97,6 +102,60 @@ print("Cost of registration fees: $" + str(round(C_registration, 2)))
 # Update total DOC to include fixed operating costs
 DOC += (C_insurance + C_financing + C_registration)
 
-print("The Direct Operating Cost (DOC) is estimated to be: $" + str(round(DOC, 2)))
+print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round(DOC, 2)))
 
 
+
+
+
+
+### PARTS A & B ###
+
+
+
+# Production cost = Flyaway cost: production costs consists on the materials and labor costs required to manufacture the aircraft,
+# and it includes tooling costs
+# Production cost and RDT&E cost are given as a combo since it is difficult to differentiate both
+# Using Raymer's text for these formulas pg. 732
+
+max_vel = 250 # knots - from RFP - maximum operating velocity
+Q = float(input("Enter the quantity to be produced in 5 years: "))
+eng_hours = 4.86 * (empty_weight**0.777) * (max_vel**0.621) * (Q**0.163)
+eng_cost = R_L * eng_hours # using the same labor rate as previously defined (R_L)
+
+tooling_hrs = 5.99 * (empty_weight**0.777) * (max_vel**0.696) * (Q**0.263)
+tooling_cost = R_L * tooling_hrs
+
+manufacturing_hrs = 7.37 * (empty_weight**0.82) * (max_vel**0.484) * (Q**0.641)
+manufacturing_cost = R_L * manufacturing_hrs
+
+quality_control_hrs = 0.076 # since it is a cargo plane
+qc_cost = R_L * quality_control_hrs
+
+development_support_cost = 91.3 * (empty_weight**0.63) * (max_vel**1.3)
+
+FTA = float(input("Enter the number of flight-test aircraft (typically between 2 ~ 6): ")) # said to be between 2 to 6
+flight_test_cost = 2498 * (empty_weight**0.325) * (max_vel**0.822) * (FTA**1.21)
+
+manufacturing_materials_cost = 22.1 * (empty_weight**0.921) * (max_vel**0.621) * (Q**0.799)
+
+engine_max_Ma = float(input("Enter the engine maximum Mach number: "))
+turbine_inlet_temp = float(input("Enter the inlet temperature of the turbine in Rankine: "))
+engine_production_cost = 3112 * ((0.043 * T_0) + (243.25 * engine_max_Ma) + (0.969 * turbine_inlet_temp) - 2228)
+# T_0 is the max engine thrust, as defined previously. Ma = Mach number. Turbine inlet temp in Rankine.
+
+total_num = float(input("Enter the total quantity of production: "))
+num_per_aircraft = float(input("Enter the number of engines per aircraft: "))
+
+cost_avionics = float(input("Enter the cost of avionics (GPS system, etc.) in USD: "))
+
+production_cost = (eng_cost + tooling_cost + manufacturing_cost +
+                   qc_cost + development_support_cost + flight_test_cost +
+                   manufacturing_materials_cost +
+                   (engine_production_cost * total_num * num_per_aircraft)
+                   + cost_avionics) # combination of RDT&E + flyaway
+
+print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
+
+profit_margin = production_cost + (0.1 * production_cost)
+print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
