@@ -9,7 +9,9 @@ import math
 
 # Using the cost escalation factor (CEF) to convert the costs between different years
 
-base_year = 1989 # Roskam uses 1989 as the base year for calculations and we have chosen to stick with Roskam - using euqations cited in Metabook
+base_year = 2025 # Roskam uses 1989 as the base year for calculations
+                 # and we have chosen to stick with Roskam -
+                 # using euqations cited in Metabook (2025 works better with numbers and is our reference year)
 then_year = 2035 # Year representing the technology level of the aircraft 
 
 # For 2024 - equation from Metabook
@@ -20,7 +22,7 @@ CEF = then_CEF / base_CEF
 
 # Total aircraft and engine price for a turboprop commuter aircraft
 MTOW = float(input("Enter the Mean Takeoff Weight (lbs): "))  # Resulting value from Weight Estimate code
-SHP_TO = float(input("Enter the Takeoff Shaft Horsepower (hp): "))
+SHP_TO = float(input("Enter the Takeoff Shaft Horsepower (shp): "))
 
 cost_aircraft = (10 ** (1.1846 + 1.2625 * math.log10(MTOW))) * CEF  # Aircraft cost
 cost_engine = (10 ** (2.5262 + 0.9465 * math.log10(SHP_TO))) * CEF  # Turboprop engine
@@ -159,3 +161,17 @@ print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
 profit_margin = production_cost + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
