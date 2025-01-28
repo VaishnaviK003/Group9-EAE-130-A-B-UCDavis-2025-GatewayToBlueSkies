@@ -9,23 +9,25 @@ import math
 
 # Using the cost escalation factor (CEF) to convert the costs between different years
 
-base_year = 2025 # Roskam uses 1989 as the base year for calculations
+base_year = 1989 # Roskam uses 1989 as the base year for calculations
                  # and we have chosen to stick with Roskam -
                  # using euqations cited in Metabook (2025 works better with numbers and is our reference year)
-then_year = 2035 # Year representing the technology level of the aircraft 
+then_year = 2024 # Year representing the technology level of the aircraft 
 
 # For 2024 - equation from Metabook
-base_CEF = 5.17053 + 0.104981 * (base_year - 2024)
-then_CEF = 5.17053 + 0.104981 * (then_year - 2024)
+base_CEF = 5.17053 + 0.104981 * (base_year - 2006)
+then_CEF = 5.17053 + 0.104981 * (then_year - 2006)
 
 CEF = then_CEF / base_CEF
+
+print(CEF)
 
 # Total aircraft and engine price for a turboprop commuter aircraft
 MTOW = float(input("Enter the Mean Takeoff Weight (lbs): "))  # Resulting value from Weight Estimate code
 SHP_TO = float(input("Enter the Takeoff Shaft Horsepower (shp): "))
 
-cost_aircraft = (10 ** (1.1846 + 1.2625 * math.log10(MTOW))) * CEF  # Aircraft cost
-cost_engine = (10 ** (2.5262 + 0.9465 * math.log10(SHP_TO))) * CEF  # Turboprop engine
+cost_aircraft = (10 ** (1.1846 + (1.2625 * math.log10(MTOW)))) * CEF  # Aircraft cost
+cost_engine = (10 ** (2.5262 + (0.9465 * math.log10(SHP_TO)))) * CEF  # Turboprop engine
 
 print("Total cost of aircraft + engine: $" + str(round(cost_aircraft + cost_engine, 2)))
 
@@ -120,19 +122,25 @@ print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): "
 # Production cost and RDT&E cost are given as a combo since it is difficult to differentiate both
 # Using Raymer's text for these formulas pg. 732
 
+year = 2030
+
 max_vel = 250 # knots - from RFP - maximum operating velocity
 Q = float(input("Enter the quantity to be produced in 5 years: "))
 eng_hours = 4.86 * (empty_weight**0.777) * (max_vel**0.621) * (Q**0.163)
-eng_cost = R_L * eng_hours # using the same labor rate as previously defined (R_L)
+labor_rate_eng = (2.576 * year) - 5058 # all the labor cost equations are coming from the lecture slides 04
+eng_cost = labor_rate_eng * eng_hours
 
 tooling_hrs = 5.99 * (empty_weight**0.777) * (max_vel**0.696) * (Q**0.263)
-tooling_cost = R_L * tooling_hrs
+labor_rate_tooling = (2.883 * year) - 5666
+tooling_cost = labor_rate_tooling * tooling_hrs
 
 manufacturing_hrs = 7.37 * (empty_weight**0.82) * (max_vel**0.484) * (Q**0.641)
-manufacturing_cost = R_L * manufacturing_hrs
+labor_rate_manufacturing = (2.316 * year) - 4552
+manufacturing_cost = labor_rate_manufacturing * manufacturing_hrs
 
 quality_control_hrs = 0.076 # since it is a cargo plane
-qc_cost = R_L * quality_control_hrs
+labor_rate_qc = (2.60 * year) - 5112
+qc_cost = labor_rate_qc * quality_control_hrs
 
 development_support_cost = 91.3 * (empty_weight**0.63) * (max_vel**1.3)
 
@@ -161,17 +169,6 @@ print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
 profit_margin = production_cost + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
-
-
-
-
-
-
-
-
-
-
-
 
 
 
