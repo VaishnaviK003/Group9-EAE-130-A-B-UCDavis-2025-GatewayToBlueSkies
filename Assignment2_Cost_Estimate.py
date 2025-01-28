@@ -20,8 +20,6 @@ then_CEF = 5.17053 + 0.104981 * (then_year - 2006)
 
 CEF = then_CEF / base_CEF
 
-print(CEF)
-
 # Total aircraft and engine price for a turboprop commuter aircraft
 MTOW = float(input("Enter the Mean Takeoff Weight (lbs): "))  # Resulting value from Weight Estimate code
 SHP_TO = float(input("Enter the Takeoff Shaft Horsepower (shp): "))
@@ -44,16 +42,16 @@ print("Cost of crew: $" + str(round(cost_crew, 2)))
 
 # Cost of fuel
 fuel_weight = float(input("Enter the weight of the fuel (lbs): "))
-P_f = float(input("Enter the price per gallon of fuel (USD/gal): "))
-rho_f = float(input("Enter the fuel density (lbs/gal): "))
+P_f = 2.74 # price per gallon of fuel (for ethanol) (USD/gal)
+rho_f = 6.59 # fuel density (lbs/gal)
 cost_fuel = 1.02 * fuel_weight * (P_f / rho_f)
 
 print("Cost of fuel: $" + str(round(cost_fuel, 2)))
 
 # Cost of oil
 weight_oil = 0.0125 * fuel_weight * (block_time / 100)
-P_oil = float(input("Enter the price per gallon of oil (USD/gal): "))
-rho_oil = float(input("Enter the oil density (lbs/gal): "))
+P_oil = 95 # price per gallon of oil (USD/gal)
+rho_oil = 7.29 # oil density (lbs/gal)
 cost_oil = 1.02 * weight_oil * (P_oil / rho_oil)
 
 print("Cost of oil: $" + str(round(cost_oil, 2)))
@@ -64,9 +62,9 @@ print("Cost of landing fees: $" + str(round(cost_airport, 2)))
 
 # Airframe Maintenance Fees
 empty_weight = float(input("Enter the empty weight (lbs): "))
-engine_weight = float(input("Enter the engine weight (lbs): "))
+engine_weight = 331 # engine weight (lbs)
 airframe_weight = empty_weight - engine_weight
-R_L = float(input("Enter the labor rate (USD/hr): "))
+R_L = 36.25 # labor rate (USD/hr)
 
 C_ML = 1.03 * (3 + (0.067 * airframe_weight / 1000)) * R_L
 C_MM = (1.03 * 30 * CEF) + ((0.79 * 10 ** -5) * cost_airframe)
@@ -75,10 +73,10 @@ cost_airframe_maintenance = (C_ML + C_MM) * block_time
 print("Cost of airframe maintenance fees: $" + str(round(cost_airframe_maintenance, 2)))
 
 # Engine Maintenance Fees
-num_engines = float(input("Enter the number of engines: "))
-H_em = float(input("Enter the number of hours between engine overhauls (hrs): "))
+num_engines = 1 # number of engines
+H_em = 4000 # number of hours between engine overhauls (hrs)
 C_ML_engine = 1.03 * 1.3 * (0.4956 + 0.0532 * ((SHP_TO / num_engines) / 1000) * (1100 / H_em) + 0.1) * R_L
-T_0 = float(input("Enter the engine maximum thrust (lbs): "))
+T_0 = 976 # engine maximum thrust (lbs) - calcuated from maximum speed and takeoff shaft horsepower
 C_MM_engine = (25 + (18 * T_0 / 10 ** 4)) * (0.62 + 0.38 / block_time) * CEF
 cost_engine_maintenance = num_engines * block_time * (C_ML_engine + C_MM_engine)
 
@@ -125,7 +123,7 @@ print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): "
 year = 2030
 
 max_vel = 250 # knots - from RFP - maximum operating velocity
-Q = float(input("Enter the quantity to be produced in 5 years: "))
+Q = 125 # quantity to be produced in 5 years
 eng_hours = 4.86 * (empty_weight**0.777) * (max_vel**0.621) * (Q**0.163)
 labor_rate_eng = (2.576 * year) - 5058 # all the labor cost equations are coming from the lecture slides 04
 eng_cost = labor_rate_eng * eng_hours
@@ -144,20 +142,21 @@ qc_cost = labor_rate_qc * quality_control_hrs
 
 development_support_cost = 91.3 * (empty_weight**0.63) * (max_vel**1.3)
 
-FTA = float(input("Enter the number of flight-test aircraft (typically between 2 ~ 6): ")) # said to be between 2 to 6
+FTA = 2 # number of flight-test aircraft (typically between 2 ~ 6)
 flight_test_cost = 2498 * (empty_weight**0.325) * (max_vel**0.822) * (FTA**1.21)
 
 manufacturing_materials_cost = 22.1 * (empty_weight**0.921) * (max_vel**0.621) * (Q**0.799)
 
-engine_max_Ma = float(input("Enter the engine maximum Mach number: "))
-turbine_inlet_temp = float(input("Enter the inlet temperature of the turbine in Rankine: "))
+engine_max_Ma = 0.378 #  engine maximum Mach number - converting from 250 knots to Mach num
+turbine_inlet_temp = 2381 # inlet temperature of the turbine in Rankine
 engine_production_cost = 3112 * ((0.043 * T_0) + (243.25 * engine_max_Ma) + (0.969 * turbine_inlet_temp) - 2228)
 # T_0 is the max engine thrust, as defined previously. Ma = Mach number. Turbine inlet temp in Rankine.
 
-total_num = float(input("Enter the total quantity of production: "))
-num_per_aircraft = float(input("Enter the number of engines per aircraft: "))
+total_num = 25 # total quantity of production
 
-cost_avionics = float(input("Enter the cost of avionics (GPS system, etc.) in USD: "))
+num_per_aircraft = 1 # number of engines per aircraft
+
+cost_avionics = 48149 # cost of avionics (GPS system, etc.) in USD
 
 production_cost = (eng_cost + tooling_cost + manufacturing_cost +
                    qc_cost + development_support_cost + flight_test_cost +
@@ -169,6 +168,5 @@ print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
 profit_margin = production_cost + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
-
 
 
