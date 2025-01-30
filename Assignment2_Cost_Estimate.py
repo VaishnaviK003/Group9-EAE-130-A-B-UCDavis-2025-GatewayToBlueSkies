@@ -104,7 +104,11 @@ print("Cost of registration fees: $" + str(round(C_registration, 2)))
 # Update total DOC to include fixed operating costs
 DOC += (C_insurance + C_financing + C_registration)
 
-print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round(DOC, 2)))
+print("The Direct Operating Cost (DOC) is estimated to be (USD): " + str(round(DOC, 2)))
+# DOC is in USD previously, then it is divded by 2000 lbs = 1 tom and 600 nmi to get the final units of USD / cargo ton-nmi
+
+print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round((DOC / (1 * 600)), 2)))
+# DOC is in USD previously, then it is divded by 2000 lbs = 1 tom and 600 nmi to get the final units of USD / cargo ton-nmi
 
 
 
@@ -120,7 +124,7 @@ print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): "
 # Production cost and RDT&E cost are given as a combo since it is difficult to differentiate both
 # Using Raymer's text for these formulas pg. 732
 
-year = 2030
+year = 2024 # assignment asks for the then_year of 2024
 
 max_vel = 250 # knots - from RFP - maximum operating velocity
 Q = 125 # quantity to be produced in 5 years
@@ -168,17 +172,3 @@ print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
 profit_margin = production_cost + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
