@@ -76,7 +76,7 @@ print("Cost of airframe maintenance fees: $" + str(round(cost_airframe_maintenan
 num_engines = 1 # number of engines
 H_em = 4000 # number of hours between engine overhauls (hrs)
 C_ML_engine = 1.03 * 1.3 * (0.4956 + 0.0532 * ((SHP_TO / num_engines) / 1000) * (1100 / H_em) + 0.1) * R_L
-T_0 = 976 # engine maximum thrust (lbs) - calcuated from maximum speed and takeoff shaft horsepower
+T_0 = 976 * 0.85 # engine maximum thrust (lbs) - calcuated from maximum speed and takeoff shaft horsepower
 C_MM_engine = (25 + (18 * T_0 / 10 ** 4)) * (0.62 + 0.38 / block_time) * CEF
 cost_engine_maintenance = num_engines * block_time * (C_ML_engine + C_MM_engine)
 
@@ -168,5 +168,17 @@ print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
 profit_margin = production_cost + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
