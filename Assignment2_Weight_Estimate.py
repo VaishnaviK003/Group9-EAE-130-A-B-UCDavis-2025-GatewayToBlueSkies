@@ -13,7 +13,7 @@ lift2drag_ratio_max = float(input("Enter the MAX L/D ratio: "))
 
 lift2drag_ratio = 0.94 * lift2drag_ratio_max
 
-Range = 600  # nmi - from RFP "range is the distance flown - use for cruise" lec03
+Range = 60  # nmi - from RFP "range is the distance flown - use for cruise" lec03
 Endurance = 30 / 60  # 30 min -> 0.5 hr from RFP "endurance is the time flown - use for loiter" lec03
 c = float(input("Enter the specific fuel consumption value 'c' [1/s]: "))  # Updated units for clarity
 velocity = 250 * 1.69  # knots to ft/s - maximum operational speed - from RFP
