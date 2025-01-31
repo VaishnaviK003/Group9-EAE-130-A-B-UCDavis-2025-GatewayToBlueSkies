@@ -126,7 +126,7 @@ print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): "
 year = 2024 # assignment asks for the then_year of 2024
 
 max_vel = 250 # knots - from RFP - maximum operating velocity
-Q = 125 # quantity to be produced in 5 years
+Q = 125 # lesser of production quantity
 eng_hours = 4.86 * (empty_weight**0.777) * (max_vel**0.621) * (Q**0.163)
 labor_rate_eng = (2.576 * year) - 5058 # all the labor cost equations are coming from the lecture slides 04
 eng_cost = labor_rate_eng * eng_hours
@@ -155,7 +155,7 @@ turbine_inlet_temp = 2381 # inlet temperature of the turbine in Rankine
 engine_production_cost = 3112 * ((0.043 * T_0) + (243.25 * engine_max_Ma) + (0.969 * turbine_inlet_temp) - 2228)
 # T_0 is the max engine thrust, as defined previously. Ma = Mach number. Turbine inlet temp in Rankine.
 
-total_num = 25 # total quantity of production
+total_num = 125 # total quantity of production
 
 num_per_aircraft = 1 # number of engines per aircraft
 
@@ -165,9 +165,27 @@ production_cost = (eng_cost + tooling_cost + manufacturing_cost +
                    qc_cost + development_support_cost + flight_test_cost +
                    manufacturing_materials_cost +
                    (engine_production_cost * total_num * num_per_aircraft)
-                   + cost_avionics) # combination of RDT&E + flyaway
+                   + (cost_avionics * total_num)) # combination of RDT&E + flyaway
 
 print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
 
-profit_margin = production_cost + (0.1 * production_cost)
+
+
+profit_margin = (production_cost) + (0.1 * production_cost)
 print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
+
+
+
+print("Flyaway cost per airplane with a 10% profit margin: $" + str(round((profit_margin / 125), 2)))
+
+
+
+
+
+
+
+
+
+
+
+
