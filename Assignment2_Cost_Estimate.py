@@ -104,10 +104,8 @@ print("Cost of registration fees: $" + str(round(C_registration, 2)))
 # Update total DOC to include fixed operating costs
 DOC += (C_insurance + C_financing + C_registration)
 
-print("The Direct Operating Cost (DOC) is estimated to be (USD): " + str(round(DOC, 2)))
-
-print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round((DOC / (1 * 600)), 2)))
-# DOC is in USD previously, then it is divded by 2000 lbs = 1 tom and 600 nmi to get the final units of USD / cargo ton-nmi
+print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round(DOC, 2)))
+# DOC is in USD / cargo ton-nmi
 
 
 
