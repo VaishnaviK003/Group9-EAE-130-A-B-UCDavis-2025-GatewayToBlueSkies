@@ -1,4 +1,3 @@
-# %%
 # EAE 130A - Aircraft Performance and Design
 # Assignment 3 - Drag Polar
 # Group 9
@@ -93,10 +92,10 @@ AR = 10 # using typical aspect ratio for estimations - NEED ACTUAL VALUE
 
 
 cL_clean = math.linspace(-0.9, 0.9, 30)
-cL_takeoff = math.linspace(-2, 2, 30)
-cL_landing = math.linspace(-2.6, 2.6, 30)
-cL_takeoff2 = math.linspace(-3, 3, 30)
-cL_landing2 = math.linspace(-3.6, 3.6, 30)
+cL_takeoff = math.linspace(-1.5, 1.5, 30)
+cL_landing = math.linspace(-2, 2, 30)
+cL_takeoff2 = math.linspace(-2.1, 2.1, 30)
+cL_landing2 = math.linspace(-2.5, 2.5, 30)
 
 eff_clean = float(input("Enter the Oswald efficiency for clean configuration (0.80 ~ 0.85): "))
 eff_takeoff = float(input("Enter the Oswald efficiency for takeoff flaps configuration (0.75 ~ 0.80): "))
@@ -130,10 +129,10 @@ plt.title('Drag Polars')
 plt.xlabel("$C_D$")
 plt.ylabel("$C_L$")
 plt.plot(cD_clean, cL_clean, label='clean', linestyle='-', linewidth=2)
-plt.plot(cD_takeoff_1, cL_takeoff, label='with takeoff flaps', linestyle='-', linewidth=2)
-plt.plot(cD_landing_flaps_1, cL_landing, label='with landing flaps', linestyle='-', linewidth=2)
-plt.plot(cD_takeoff_2, cL_takeoff, label='with takeoff flaps', linestyle='-', linewidth=2) # if retractable
-plt.plot(cD_landing_flaps_2, cL_landing, label='with landing flaps', linestyle='-', linewidth=2) # if retractable
+plt.plot(cD_takeoff_1, cL_takeoff, label='with takeoff flaps - gear up', linestyle='-', linewidth=2)
+plt.plot(cD_landing_flaps_1, cL_landing, label='with landing flaps - gear up', linestyle='-', linewidth=2)
+plt.plot(cD_takeoff_2, cL_takeoff, label='with takeoff flaps - gear down', linestyle='-', linewidth=2) # if retractable
+plt.plot(cD_landing_flaps_2, cL_landing, label='with landing flaps - gear down', linestyle='-', linewidth=2) # if retractable
 # plt.plot(cD_landing_gear, cL_landing, label='with landing gear', linestyle='-', linewidth=2)
 plt.legend(loc='best')
 plt.show()
@@ -147,6 +146,3 @@ plt.show()
 #eta_p = float(input("Enter the efficiency of the propeller: "))
 #V = float(input("Enter the velocity (ft/s): "))
 #power_weight_ratio = thurst_weight_ratio / (550 * eta_p / V)
-
-
-
