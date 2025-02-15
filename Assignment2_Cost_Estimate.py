@@ -42,7 +42,7 @@ print("Cost of crew: $" + str(round(cost_crew, 2)))
 
 # Cost of fuel
 fuel_weight = float(input("Enter the weight of the fuel (lbs): "))
-P_f = 2.74 # price per gallon of fuel (for ethanol) (USD/gal)
+P_f = 1.83 # price per gallon of fuel (for ethanol) (USD/gal)
 rho_f = 6.59 # fuel density (lbs/gal)
 cost_fuel = 1.02 * fuel_weight * (P_f / rho_f)
 
@@ -82,16 +82,18 @@ cost_engine_maintenance = num_engines * block_time * (C_ML_engine + C_MM_engine)
 
 print("Cost of engine maintenance fees: $" + str(round(cost_engine_maintenance, 2)))
 
-# Direct Operating Cost (DOC)
-DOC = (cost_crew + cost_fuel + cost_oil + cost_airport +
-       cost_airframe_maintenance + cost_engine_maintenance)
-
-# Fixed Operating Cost
+# FOC
 # Insurance
 U_annual = (1.5 * 10 ** 3) * (3.4546 * block_time + 2.994 - (
     (12.289 * block_time ** 2) - (5.6626 * block_time) + 8.964) ** 0.5)
 C_insurance = ((0.02 * cost_aircraft) / U_annual) * block_time
 print("Cost of insurance fees: $" + str(round(C_insurance, 2)))
+
+# Direct Operating Cost (DOC)
+DOC = (cost_crew + cost_fuel + cost_oil + cost_airport +
+       cost_airframe_maintenance + cost_engine_maintenance + C_insurance)
+
+# Fixed Operating Cost
 
 # Financing
 C_financing = 0.07 * DOC
@@ -102,15 +104,19 @@ C_registration = (0.001 + (10 ** -8) * MTOW) * DOC
 print("Cost of registration fees: $" + str(round(C_registration, 2)))
 
 # Update total DOC to include fixed operating costs
-DOC += (C_insurance + C_financing + C_registration)
+DOC += (C_financing + C_registration)
+#print(str(DOC))
 
-print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round(DOC, 2)))
+DOC_final = DOC  * (2000 / (600 * 2000)) # DOC is in USD (assumed) and so 2000 lb payload and 1 ton is 2000 lbs so unit conversions are performed and 600 nmi range is used
+
+print("The Direct Operating Cost (DOC) is estimated to be (USD/cargo ton-nmi): " + str(round(DOC_final, 2))) 
 # DOC is in USD / cargo ton-nmi
 
 
+### Roskam pg. 326 (text page 301) - cost of aircraft
 
-
-
+cost_check = CEF * (10 ** (-1.1174 + (1.8459 * (math.log10(MTOW)))))
+print("Cost of airplane (flyaway cost) estimate according to Roskam: " + str(cost_check))
 
 ### PARTS A & B ###
 
@@ -165,20 +171,17 @@ production_cost = (eng_cost + tooling_cost + manufacturing_cost +
                    (engine_production_cost * total_num * num_per_aircraft)
                    + (cost_avionics * total_num)) # combination of RDT&E + flyaway
 
-print("RDT&E + Production Costs: $" + str(round(production_cost, 2)))
+#print("RDT&E + Production Costs: $" + str(round(production_cost/125, 2)))
 
 
 
-profit_margin = (production_cost) + (0.1 * production_cost)
-print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
+#profit_margin = ((production_cost) + (0.1 * production_cost)) / 125
+#print("Flyaway cost per airline with a 10% profit margin: $" + str(round(profit_margin, 2)))
 
+flyaway_cost = cost_airframe + cost_engine + cost_avionics # according to lec 04 slide 13, flyaway is labeled as airframe engine and avionics only
+profit = flyaway_cost + (0.1 * flyaway_cost)
 
-
-print("Flyaway cost per airplane with a 10% profit margin: $" + str(round((profit_margin / 125), 2)))
-
-
-
-
+print("Flyaway cost per airplane with a 10% profit margin: $" + str(round((profit), 2)))
 
 
 
