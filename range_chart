@@ -1,0 +1,67 @@
+# range chart
+
+import matplotlib.pyplot as plt
+import numpy as np
+n= 0.84 *0.77 *0.81
+c = 0.556 /3600 /550
+print(c)
+cl = 0.37064
+cd= 0.0309285
+w0= 7777   #mtow
+w1= 5074  # oew + reserve fuel
+w2= 5074  +2000  # oew + reserve fuel + max payload
+
+w3 = 5074  +1297# oew +reserve fuel + payload for max fuel 
+w4 = 5704 +703 #oew +reserve fuel + max fuel
+
+
+# point A
+x1 = 0
+y1= 2000
+
+plt.text(x1, -105, 'A', color='blue', fontsize= 11, ha= 'center')
+
+
+# point B
+
+x2 = (n/c)*(cl/cd)*np.log(w0/w2) *0.000164579 #conversion from feet to nautical miles
+y2 = 2000
+
+plt.text(x2, -105, 'B', color='blue', fontsize= 11, ha= 'center')
+
+x_values = [x1, x2]
+y_values = [y1, y2]
+plt.plot(x_values, y_values, marker='o', color='blue', linestyle='-')
+
+#point c
+
+x3 = (n/c)*(cl/cd)*np.log(w0/w3) *0.000164579
+y3 = 1297 # payload - additional fuel
+
+plt.text(x3, -105, 'C', color='blue', fontsize= 11, ha= 'center')
+
+x_values2 = [x2, x3]
+y_values2 = [y2, y3]
+
+plt.plot(x_values2, y_values2, marker='o', color='blue', linestyle='-')
+
+# point d
+
+x4 = (n/c)*(cl/cd)*np.log(w4/w1) *0.000164579
+y4 = 0
+
+plt.text(x4, -105, 'D', color='blue', fontsize= 11, ha= 'center')
+
+
+x_values3 = [x3, x4]
+y_values3 = [y3, y4]
+
+plt.plot(x_values3, y_values3, marker='o', color='blue', linestyle='-')
+
+
+
+plt.title('Payload Range Chart')
+plt.xlabel('range (nmi)')
+plt.ylabel('payload weight (lbs)')
+plt.grid(True)
+plt.show()
