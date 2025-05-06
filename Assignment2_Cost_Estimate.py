@@ -171,7 +171,7 @@ production_cost = (eng_cost + tooling_cost + manufacturing_cost +
                    (engine_production_cost * total_num * num_per_aircraft)
                    + (cost_avionics * total_num)) # combination of RDT&E + flyaway
 
-#print("RDT&E + Production Costs: $" + str(round(production_cost/125, 2)))
+print("RDT&E + Production Costs: $" + str(round(production_cost/125, 2)))
 
 
 
